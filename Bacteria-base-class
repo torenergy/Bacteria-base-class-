@@ -1,0 +1,108 @@
+import random
+import time
+
+class Bacteria:
+    def __init__(self, name, growth_rate, max_population, resistance):
+        self.name = name
+        self.growth_rate = growth_rate  # Growth rate per cycle
+        self.population = 1  # Start with one bacterium
+        self.max_population = max_population  # Carrying capacity
+        self.resistance = resistance  # Resistance to environmental stress (0 to 1)
+        self.alive = True
+
+    def grow(self):
+        """Simulate population growth based on growth rate and carrying capacity."""
+        if self.alive:
+            growth = int(self.population * self.growth_rate)
+            self.population = min(self.population + growth, self.max_population)
+            print(f"{self.name} population: {self.population}")
+
+    def reproduce(self):
+        """Simulate reproduction, doubling population if below max."""
+        if self.alive and self.population < self.max_population:
+            self.population = min(self.population * 2, self.max_population)
+            print(f"{self.name} reproduced! New population: {self.population}")
+
+    def environmental_stress(self, stress_factor):
+        """Apply environmental stress (e.g., antibiotics, temperature)."""
+        if random.random() > self.resistance * stress_factor:
+            self.population = max(0, self.population - int(self.population * 0.5))
+            print(f"{self.name} suffered stress! Population reduced to: {self.population}")
+            if self.population == 0:
+                self.alive = False
+                print(f"{self.name} has died out!")
+        else:
+            print(f"{self.name} resisted environmental stress!")
+
+    def status(self):
+        """Return current status of the bacteria."""
+        return f"{self.name}: Population={self.population}, Alive={self.alive}"
+
+class EscherichiaColi(Bacteria):
+    def __init__(self):
+        super().__init__(name="Escherichia coli", growth_rate=0.5, max_population=1000, resistance=0.6)
+
+    def special_ability(self):
+        """E. coli can adapt to stress, slightly increasing resistance."""
+        self.resistance = min(self.resistance + 0.1, 1.0)
+        print(f"{self.name} adapted! New resistance: {self.resistance}")
+
+class StreptococcusPyogenes(Bacteria):
+    def __init__(self):
+        super().__init__(name="Streptococcus pyogenes", growth_rate=0.3, max_population=800, resistance=0.4)
+
+    def special_ability(self):
+        """S. pyogenes can cause infection, boosting growth temporarily."""
+        self.growth_rate += 0.2
+        print(f"{self.name} caused infection! Growth rate increased to {self.growth_rate}")
+        self.grow()
+        self.growth_rate -= 0.2  # Reset after infection
+
+class MycobacteriumTuberculosis(Bacteria):
+    def __init__(self):
+        super().__init__(name="Mycobacterium tuberculosis", growth_rate=0.1, max_population=500, resistance=0.8)
+
+    def special_ability(self):
+        """M. tuberculosis can enter a dormant state to survive stress."""
+        print(f"{self.name} entered dormant state! Immune to stress this cycle.")
+        self.resistance = 1.0  # Temporary immunity
+        time.sleep(1)  # Simulate dormancy duration
+        self.resistance = 0.8  # Revert to normal resistance
+
+# Simulation function
+def simulate_bacteria_colony(bacteria_list, cycles=5, stress_probability=0.3):
+    """Simulate bacterial colony behavior over multiple cycles."""
+    for cycle in range(cycles):
+        print(f"\nCycle {cycle + 1}:")
+        for bacterium in bacteria_list:
+            if bacterium.alive:
+                # Randomly apply growth or reproduction
+                if random.random() < 0.7:
+                    bacterium.grow()
+                else:
+                    bacterium.reproduce()
+
+                # Randomly apply special ability
+                if random.random() < 0.3:
+                    bacterium.special_ability()
+
+                # Randomly apply environmental stress
+                if random.random() < stress_probability:
+                    bacterium.environmental_stress(stress_factor=0.5)
+
+                print(bacterium.status())
+            else:
+                print(f"{bacterium.name} is extinct.")
+
+# Main program
+if __name__ == "__main__":
+    # Create instances of different bacteria
+    e_coli = EscherichiaColi()
+    strep = StreptococcusPyogenes()
+    tb = MycobacteriumTuberculosis()
+
+    # List of bacteria to simulate
+    bacteria_colony = [e_coli, strep, tb]
+
+    # Run simulation for 5 cycles
+    simulate_bacteria_colony(bacteria_colony, cycles=5, stress_probability=0.3)
