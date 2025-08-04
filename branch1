@@ -1,0 +1,16 @@
+Cycle 1:
+Escherichia coli population: 1
+Escherichia coli: Population=1, Alive=True
+Streptococcus pyogenes reproduced! New population: 2
+Streptococcus pyogenes: Population=2, Alive=True
+Mycobacterium tuberculosis population: 1
+Mycobacterium tuberculosis: Population=1, Alive=True
+
+Cycle 2:
+Escherichia coli adapted! New resistance: 0.7
+Escherichia coli: Population=1, Alive=True
+Streptococcus pyogenes population: 3
+Streptococcus pyogenes: Population=3, Alive=True
+Mycobacterium tuberculosis entered dormant state! Immune to stress this cycle.
+Mycobacterium tuberculosis: Population=1, Alive=True
+...
