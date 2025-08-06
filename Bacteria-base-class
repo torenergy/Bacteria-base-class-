@@ -94,15 +94,4 @@ def simulate_bacteria_colony(bacteria_list, cycles=5, stress_probability=0.3):
             else:
                 print(f"{bacterium.name} is extinct.")
 
-# Main program
-if __name__ == "__main__":
-    # Create instances of different bacteria
-    e_coli = EscherichiaColi()
-    strep = StreptococcusPyogenes()
-    tb = MycobacteriumTuberculosis()
 
-    # List of bacteria to simulate
-    bacteria_colony = [e_coli, strep, tb]
-
-    # Run simulation for 5 cycles
-    simulate_bacteria_colony(bacteria_colony, cycles=5, stress_probability=0.3)
